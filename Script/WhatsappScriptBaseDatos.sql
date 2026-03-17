@@ -67,6 +67,7 @@ CREATE TABLE MensajeLeidos(
 	FechaLeido DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
 	CONSTRAINT FK_MensajeLeidoUsuario FOREIGN KEY (UsuarioId) REFERENCES Usuarios(UsuarioId)
 );
+GO
 
 CREATE TABLE Reacciones(
 	ReaccionId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -76,6 +77,7 @@ CREATE TABLE Reacciones(
 
 	CONSTRAINT FK_UsuarioReaccion FOREIGN KEY (UsuarioId) REFERENCES Usuarios(UsuarioId)
 );
+GO
 
 CREATE TABLE ConversacionUsuario(
 	ConversacionUsuarioId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -83,9 +85,10 @@ CREATE TABLE ConversacionUsuario(
 	MensajeSilenciado BIT NOT NULL DEFAULT 1,
 	CONSTRAINT FK_UsuarioConversion FOREIGN KEY (UsuarioId) REFERENCES Usuarios(UsuarioId)
 );
+GO
 
 CREATE TABLE Conversaciones(
-	ConversionId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	ConversacionId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	ConversacionUsuarioId INT NOT NULL,
 	Nombre NVARCHAR(250) NOT NULL,
 	Descripcion NVARCHAR(250),
@@ -93,3 +96,25 @@ CREATE TABLE Conversaciones(
 	CONSTRAINT FK_ConversacionUsuario FOREIGN KEY (ConversacionUsuarioId) REFERENCES ConversacionUsuario(ConversacionUsuarioId)
 
 );
+GO
+
+CREATE TABLE EstadoMensaje(
+	EstadoMensajeId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	NombreEstado NVARCHAR(50)
+);
+GO
+CREATE TABLE Mensaje(
+	MensajeId INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	ConversacionId INT NOT NULL,
+	EstadoMensajeId INT NOT NULL,
+	ReaccionId INT NOT NULL,
+	Contenido TEXT,
+	TipoDocumento TEXT,
+	FechaEnvio DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+	MensajeEliminado BIT DEFAULT 1,
+	RespuestaMensaje TEXT,
+
+	CONSTRAINT FK_ConversaionMensajeId FOREIGN KEY (ConversacionId) REFERENCES Conversaciones(ConversacionId),
+	CONSTRAINT FK_EstadoMensajeId FOREIGN KEY (EstadoMensajeId) REFERENCES EstadoMensaje(EstadoMensajeId)
+
+)
