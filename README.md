@@ -24,7 +24,7 @@ Este proyecto consiste en la construcción de un sistema de mensajería que perm
 ## 🛠️ Tecnologías utilizadas
 
 * SQL Server
-* 
+
 
 ---
 
